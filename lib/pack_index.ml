@@ -48,6 +48,8 @@ module Raw = struct
 
   let pretty = Misc.pretty pp
 
+  let output ch t = output_string ch (pretty t)
+
   let lengths { offsets; _ } =
     let rec aux acc = function
       | []    -> List.rev acc

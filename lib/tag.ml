@@ -45,6 +45,7 @@ module T = struct
 
   let pretty = Misc.pretty pp
 
+  let output ch t = output_string ch (pretty t)
 end
 
 include T

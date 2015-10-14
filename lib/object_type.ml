@@ -34,6 +34,7 @@ let to_string = function
 
 let pretty = to_string
 let pp ppf t = Format.fprintf ppf "%s" (pretty t)
+let output ch t = output_string ch (pretty t)
 
 let add buf ?level:_ t =
   Buffer.add_string buf (to_string t)

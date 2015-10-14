@@ -147,6 +147,8 @@ let pretty t =
 
 let pp ppf t = Format.fprintf ppf "%s" (pretty t)
 
+let output ch t = output_string ch (pretty t)
+
 let input_time buf =
   let lsb32 = Mstruct.get_be_uint32 buf in
   let nsec = Mstruct.get_be_uint32 buf in
@@ -227,6 +229,7 @@ module IO (D: SHA.DIGEST) = struct
   let compare = compare
   let pp = pp
   let pretty = pretty
+  let output = output
   let hash = hash
 
   let input_entry buf =

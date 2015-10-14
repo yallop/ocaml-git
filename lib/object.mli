@@ -38,6 +38,8 @@ module type S = sig
   val pp: Format.formatter -> t -> unit
   (** Same as {!pretty} but using a generic formatter. *)
 
+  val output: out_channel -> t -> unit
+  (** Same as {!pretty} but write to an out_channel. *)
 end
 
 module type IO = sig

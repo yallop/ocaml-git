@@ -32,6 +32,7 @@ module T = struct
   let compare = Pervasives.compare
   let pp ppf t = List.iter (to_line ppf) t
   let pretty = Misc.pretty pp
+  let output ch t = output_string ch (pretty t)
 end
 
 include T

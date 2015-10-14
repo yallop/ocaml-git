@@ -37,6 +37,7 @@ module T = struct
 
   let pretty = Misc.pretty pp
 
+  let output ch t = output_string ch (pretty t)
 end
 
 include T
@@ -83,6 +84,7 @@ module Raw = struct
       ) t.values
 
   let pretty = Misc.pretty pp
+  let output ch t = output_string ch (pretty t)
   let shallow t = t.shallow
   let sha1 t = t.sha1
   let keys t = t.keys

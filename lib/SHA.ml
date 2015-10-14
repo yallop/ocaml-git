@@ -98,6 +98,7 @@ module SHA1_String = struct
   let of_raw x = { raw=x; padded=false; }
   let pretty = to_hex
   let pp ppf t = Format.fprintf ppf "%s" (pretty t)
+  let output ch t = output_string ch (pretty t)
 
   module X = struct
     type t = sha

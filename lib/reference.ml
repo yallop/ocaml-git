@@ -29,6 +29,7 @@ let to_raw x = x
 let of_raw x = x
 let pretty x = String.escaped x
 let pp ppf x = Format.fprintf ppf "%s" (pretty x)
+let output ch t = output_string ch (pretty t)
 
 module Map = Misc.Map(Misc.S)
 

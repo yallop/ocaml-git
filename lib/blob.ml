@@ -29,6 +29,7 @@ let pretty t =
       (String.length t)
 
 let pp ppf t = Format.fprintf ppf "%s" (pretty t)
+let output ch t = output_string ch (pretty t)
 let to_raw x = x
 let of_raw x = x
 let input buf = Mstruct.to_string buf

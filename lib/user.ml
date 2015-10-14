@@ -65,6 +65,8 @@ let pp ppf t =
 
 let pretty = Misc.pretty pp
 
+let output ch t = output_string ch (pretty t)
+
 (* XXX needs to escape name/email/date *)
 let add buf ?level:_ t =
   Buffer.add_string buf t.name ;

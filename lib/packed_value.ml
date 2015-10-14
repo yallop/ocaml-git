@@ -79,6 +79,8 @@ let pp ppf { kind; offset } =
 
 let pretty = Misc.pretty pp
 
+let output ch t = output_string ch (pretty t)
+
 let create ~offset ~kind = { offset; kind }
 let kind t = t.kind
 let offset t = t.offset
@@ -151,6 +153,8 @@ module PIC = struct
     Format.fprintf ppf "@[%a: %s@]" SHA.pp t.sha1 (pretty_kind t.kind)
 
   let pretty = Misc.pretty pp
+
+  let output ch t = output_string ch (pretty t)
 
   let create ?raw ?(shallow=false) sha1 kind = { sha1; kind; shallow; raw }
   let sha1 t = t.sha1
@@ -445,6 +449,7 @@ module IO (D: SHA.DIGEST) (I: Inflate.S) = struct
 
     let pretty = Misc.pretty pp_kind
 
+    let output ch t = output_string ch (pretty t)
   end
 
   module V2 = V(struct let version = 2 end)
