@@ -186,3 +186,5 @@ let pretty pp_hum t =
   pp_hum ppf t;
   Format.pp_print_flush ppf ();
   Buffer.contents buf
+
+let output convert ch v = output_string ch (convert v)

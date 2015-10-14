@@ -93,3 +93,4 @@ module OP: sig
 end
 
 val pretty: (Format.formatter -> 'a -> unit) -> 'a -> string
+val output: ('a -> string) -> out_channel -> ('a -> unit)
