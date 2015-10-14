@@ -23,7 +23,7 @@ let to_line ppf = function
   | `Newline -> Format.fprintf ppf "\n"
   | `Comment c -> Format.fprintf ppf "# %s\n" c
   | `Entry (s,r) ->
-    Format.fprintf ppf "%s %s" (SHA.Commit.to_hex s) (Reference.to_raw r)
+    Format.fprintf ppf "%a %s" SHA.Commit.pp s (Reference.to_raw r)
 
 module T = struct
   type t = entry list

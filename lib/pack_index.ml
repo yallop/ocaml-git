@@ -147,14 +147,14 @@ module Make (D: SHA.DIGEST) = struct
     let s = SHA.to_raw sha1 in
     int_of_char s.[0]
 
-  let fail fmt = Printf.ksprintf failwith ("Pack_index." ^^ fmt)
+  let fail fmt = Format.ksprintf failwith ("Pack_index." ^^ fmt)
 
   let (++) x y = match y with
     | None   -> None
     | Some y -> Some (x + y)
 
   let get_sha1_idx t sha1 =
-    Log.debug "get_sha1_idx: %s" (SHA.pretty sha1);
+    Log.debug "get_sha1_idx: %a" SHA.output sha1;
     let fanout_idx = fanout_of_sha1 sha1 in
     let offsets = fanout t in
     let get_int buf = Int32.to_int (Mstruct.get_be_uint32 buf) in
@@ -175,7 +175,7 @@ module Make (D: SHA.DIGEST) = struct
     offset ++ A.binary_search buf sha1
 
   let find_offset t sha1 =
-    Log.debug "find_offset: %s" (SHA.pretty sha1);
+    Log.debug "find_offset: %a" SHA.output sha1;
     match Offset_cache.find t.cache sha1 with
     | Some _ as x -> Log.debug "find_offset: cache hit!"; x
     | None ->
@@ -202,7 +202,7 @@ module Make (D: SHA.DIGEST) = struct
         )
 
   let mem t sha1 =
-    Log.debug "mem: %s" (SHA.to_hex sha1);
+    Log.debug "mem: %a" SHA.output sha1;
     match find_offset t sha1 with
     | Some _ -> Log.debug "mem: true" ; true
     | None   -> Log.debug "mem: false"; false

@@ -117,7 +117,7 @@ module IO (D: SHA.DIGEST) (I: Inflate.S) = struct
     | Object_type.Tree   -> Tree_IO.input buf   |> tree
 
   let add buf ?level t =
-    Log.debug "add %s" (pretty t);
+    Log.debug "add %a" output t;
     let inflated = Misc.with_buffer' (fun buf -> add_inflated buf t) in
     let deflated = I.deflate ?level inflated in
     Buffer.add_string buf (Cstruct.to_string deflated)

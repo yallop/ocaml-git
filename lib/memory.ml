@@ -82,7 +82,7 @@ module Make (D: SHA.DIGEST) (I: Inflate.S) = struct
     let sha1 = D.string inflated in
     if Hashtbl.mem t.values sha1 then Lwt.return sha1
     else (
-      Log.info "Writing %s" (SHA.to_hex sha1);
+      Log.info "Writing %a" SHA.output sha1;
       Hashtbl.add t.values sha1 (lazy value);
       Hashtbl.add t.inflated sha1 inflated;
       Lwt.return sha1
@@ -92,7 +92,7 @@ module Make (D: SHA.DIGEST) (I: Inflate.S) = struct
     let sha1 = D.string inflated in
     if Hashtbl.mem t.values sha1 then Lwt.return sha1
     else (
-      Log.info "Writing %s" (SHA.to_hex sha1);
+      Log.info "Writing %a" SHA.output sha1;
       Hashtbl.add t.inflated sha1 inflated;
       let value =
         (* FIXME: this allocates too much *)
@@ -173,7 +173,7 @@ module Make (D: SHA.DIGEST) (I: Inflate.S) = struct
     Lwt.return (Hashtbl.mem t.refs ref)
 
   let rec read_reference t ref =
-    Log.info "Reading %s" (Reference.pretty ref);
+    Log.info "Reading %a" Reference.output ref;
     try
       match Hashtbl.find t.refs ref with
       | `S s -> Lwt.return (Some s)
@@ -199,7 +199,7 @@ module Make (D: SHA.DIGEST) (I: Inflate.S) = struct
     Lwt.return_unit
 
   let write_reference t ref sha1 =
-    Log.info "Writing %s" (Reference.pretty ref);
+    Log.info "Writing %a" Reference.output ref;
     Hashtbl.replace t.refs ref (`S sha1);
     Lwt.return_unit
 

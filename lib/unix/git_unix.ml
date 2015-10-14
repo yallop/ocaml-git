@@ -51,7 +51,9 @@ module IO_Sync = struct
       | None   -> [| "ssh"; user ^ host; |]
       | Some x -> [| "ssh"; user ^ host; x |]
     in
-    Log.info "Executing '%s'" (String.concat " " (Array.to_list cmd));
+    Log.info "Executing '%a'"
+      (fun ch v -> output_string ch (String.concat " " (Array.to_list v)))
+      cmd;
     let env = Unix.environment () in
     let p = Lwt_process.open_process_full ~env ("ssh", cmd) in
     Lwt.finalize
@@ -59,7 +61,7 @@ module IO_Sync = struct
       (fun () -> let _ = p#close in Lwt.return_unit)
 
   let with_conduit ?init uri fn =
-    Log.debug "Connecting to %s" (Uri.to_string uri);
+    Log.debug "Connecting to %a" (Misc.output Uri.to_string) uri;
     let resolver = Resolver_lwt_unix.system in
     Resolver_lwt.resolve_uri ~uri resolver >>= fun endp ->
     let ctx = Conduit_lwt_unix.default_ctx in

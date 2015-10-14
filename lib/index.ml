@@ -214,7 +214,7 @@ let err_wrong_index_header buf =
 
 let err_wrong_checksum ~got ~expected =
   fail "Wrong checksum! got %s but was expecting %s."
-    (SHA.pretty got) (SHA.pretty expected)
+    (SHA.to_hex got) (SHA.to_hex expected)
 
 let pp_extension ppf e =
   Format.fprintf ppf "@[kind:%s@ size:%d]"
@@ -250,8 +250,8 @@ module IO (D: SHA.DIGEST) = struct
       | 0 -> 0
       | n -> 8-n in
     Mstruct.shift buf padding;
-    Log.debug "name:%s id:%s bytes:%d padding:%d"
-      name (SHA.Blob.to_hex id) bytes padding;
+    Log.debug "name:%s id:%a bytes:%d padding:%d"
+      name SHA.Blob.output id bytes padding;
     { stats; id; stage; name }
 
   let add_entry buf t =

@@ -165,7 +165,7 @@ module IO_helper (Channel: V1_LWT.CHANNEL) = struct
     Lwt.catch
       (fun () -> Channel.read_some ~len ic >|= fun buf -> Some buf)
       (fun e ->
-         Log.debug "Got exn: %s" (Printexc.to_string e);
+         Log.debug "Got exn: %a" (Misc.output Printexc.to_string) e;
          Printexc.print_backtrace stderr;
          Lwt.return_none)
 
@@ -241,12 +241,12 @@ module Git_protocol = struct
         | e ->
           (* WARNING: do not catch `Unix` exception here, as it will
              bring a unwanted dependency to unix.cma *)
-          Log.debug "Ignoring exn: %s" (Printexc.to_string e);
+          Log.debug "Ignoring exn: %a" (Misc.output Printexc.to_string) e;
           Lwt.return_unit)
 
   let with_connection (resolver, conduit) uri ?init fn =
     assert (Git.Sync.protocol uri = `Ok `Git);
-    Log.debug "Connecting to %s" (Uri.to_string uri);
+    Log.debug "Connecting to %a" (Misc.output Uri.to_string) uri;
     Resolver_lwt.resolve_uri ~uri resolver >>= fun endp ->
     Conduit_mirage.client endp >>= fun client ->
     Conduit_mirage.connect conduit client >>= fun flow ->
@@ -305,7 +305,7 @@ module Smart_HTTP = struct
         | e ->
           (* WARNING: do not catch `Unix` exception here, as it will
              bring a unwanted dependency to unix.cma *)
-          Log.debug "Ignoring exn: %s" (Printexc.to_string e);
+          Log.debug "Ignoring exn: %a" (Misc.output Printexc.to_string) e;
           Lwt.return_unit)
 
   module HTTP_fn = Git_http.Flow(HTTP)(In_channel)(Out_channel)

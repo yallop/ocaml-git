@@ -335,8 +335,10 @@ module Flow(HTTP: CLIENT) (IC: CHAN) (OC: CHAN) = struct
         let l = Marshal.from_string s 0 in
         Cohttp.Header.of_list l
     in
-    Log.debug "HTTP headers: %s"
-      (Sexplib.Sexp.to_string (Cohttp.Header.sexp_of_t headers));
+    Log.debug "HTTP headers: %a"
+      (fun ch h -> output_string ch (Sexplib.Sexp.to_string
+                                       (Cohttp.Header.sexp_of_t h)))
+      headers;
     let meth =
       let path = Uri.path uri in
       let info = Filename.basename (Filename.dirname path) in
